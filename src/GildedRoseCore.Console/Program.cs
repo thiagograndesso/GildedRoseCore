@@ -21,7 +21,7 @@ namespace ConsoleApplication
         {
             foreach (var item in Items)
             {
-                var strategy = StrategyFinder.Create(item);
+                var strategy = StrategyFactory.Create(item);
                 strategy.UpdateQuality(item);
             }
         }

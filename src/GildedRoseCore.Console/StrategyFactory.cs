@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace ConsoleApplication
 {
-    public static class StrategyFinder
+    public static class StrategyFactory
     {
         private static readonly IList<IStrategy> Strategies = new List<IStrategy>
         {
