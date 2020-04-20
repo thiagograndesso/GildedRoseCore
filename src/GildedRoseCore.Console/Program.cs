@@ -95,11 +95,21 @@ namespace ConsoleApplication
 
                 DecreaseSellIn(item);
 
+                DecreaseQualityIfConjuredManaCake(item);
+
                 if (item.SellIn >= 0) continue;
                 
                 if (IncreaseQualityForAgedBrieWhenSellByHasPassed(item)) continue;
                 if (ResetQualityForBackstagePassWhenSellByDateHasPassed(item)) continue;
                             
+                DecreaseQuality(item);
+            }
+        }
+
+        private static void DecreaseQualityIfConjuredManaCake(Item item)
+        {
+            if (item.Name.Equals("Conjured Mana Cake"))
+            {
                 DecreaseQuality(item);
             }
         }

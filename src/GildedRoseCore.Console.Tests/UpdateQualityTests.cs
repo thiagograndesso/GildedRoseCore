@@ -148,6 +148,21 @@ namespace Tests
             // Assert
             Assert.Equal(pickedItem.Quality, previousQuality - 2);
         }
+        
+        [Fact]
+        public void UpdateQuality_WhenItemIsConjuredManaCake_QualityDegradesTwiceAsFast()
+        {
+            // Arrange
+            var program = new Program { Items = Program.GetAllItems() };
+            var conjuredManaCake = GetItem(program.Items, "Conjured Mana Cake");
+            var quality = conjuredManaCake.Quality;
+            
+            // Act
+            program.UpdateQuality();
+            
+            // Assert
+            Assert.Equal(quality - 2, conjuredManaCake.Quality);
+        }
 
         Item GetItem(IList<Item> items, string name)
         {
