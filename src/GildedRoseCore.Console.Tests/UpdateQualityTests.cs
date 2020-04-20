@@ -11,7 +11,7 @@ namespace Tests
         public void UpdateQuality_WhenItemIsSulfuras_SellInIsAlwaysZeroAndQualityIsAlwaysEighty()
         {
             // Arrange
-            var program = new Program { Items = Program.GetAllItems() };
+            var program = new Program { Items = InventoryStore.GetItems() };
 
             // Act
             program.UpdateQuality();
@@ -28,7 +28,7 @@ namespace Tests
         public void UpdateQuality_WhenQualityIsUpdated_QualityIsNeverNegative()
         {
             // Arrange
-            var program = new Program { Items = Program.GetAllItems() };
+            var program = new Program { Items = InventoryStore.GetItems() };
 
             // Act
             for (int quality = 0; quality < 51; quality++)
@@ -47,7 +47,7 @@ namespace Tests
         public void UpdateQuality_WhenQualityIsUpdated_QualityNeverExceedsFifty()
         {
             // Arrange
-            var program = new Program { Items = Program.GetAllItems() };
+            var program = new Program { Items = InventoryStore.GetItems() };
 
             // Act
             for (int quality = 0; quality < 51 ; quality++)
@@ -69,7 +69,7 @@ namespace Tests
         public void UpdateQuality_WhenItemIsAgedBrie_QualityIncreasesTheOlderItGets()
         {
             // Arrange
-            var program = new Program { Items = Program.GetAllItems() };
+            var program = new Program { Items = InventoryStore.GetItems() };
             var agedBrie = GetItem(program.Items, "Aged Brie");
             var agedBrieQuality = agedBrie.Quality;
 
@@ -84,7 +84,7 @@ namespace Tests
         [Fact]
         public void UpdateQuality_WhenItemIsBackstagePasses_QualityIncreasesUntilSellInDate()
         {
-            var program = new Program { Items = Program.GetAllItems() };
+            var program = new Program { Items = InventoryStore.GetItems() };
             var backstagePass = GetItem(program.Items, "Backstage passes to a TAFKAL80ETC concert");
 
             var quality = backstagePass.Quality;
@@ -126,7 +126,7 @@ namespace Tests
         public void UpdateQuality_WhenSellByDateHasPassed_QualityDegradesTwiceAsFast()
         {
             // Arrange
-            var program = new Program { Items = Program.GetAllItems() };
+            var program = new Program { Items = InventoryStore.GetItems() };
 
             var itemsWithQualityDegradingTwiceAsFast = program.Items
                 .Where(item => !item.Name.Equals("Aged Bried"))
@@ -153,7 +153,7 @@ namespace Tests
         public void UpdateQuality_WhenItemIsConjuredManaCake_QualityDegradesTwiceAsFast()
         {
             // Arrange
-            var program = new Program { Items = Program.GetAllItems() };
+            var program = new Program { Items = InventoryStore.GetItems() };
             var conjuredManaCake = GetItem(program.Items, "Conjured Mana Cake");
             var quality = conjuredManaCake.Quality;
             
