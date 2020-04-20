@@ -34,15 +34,7 @@ namespace ConsoleApplication
     public class Item
     {
         public string Name { get; set; }
-        
-        /// <summary>
-        ///     The number of days we have to sell the item
-        /// </summary>
         public int SellIn { get; set; }
-        
-        /// <summary>
-        ///     How valuable the item is
-        /// </summary>
         public int Quality { get; set; }
     }
 
@@ -81,134 +73,32 @@ namespace ConsoleApplication
 
         public void UpdateQuality()
         {
-            var allNotLegendaryItems = Items.Where(item => !IsLegendary(item)).ToList();
-
-            foreach (var item in allNotLegendaryItems)
-            {
-                IncreaseQualityIfAgedBrie(item);
-                IncreaseQualityIfBackstagePass(item);
-
-                if (!DoesQualityIncreaseOverTime(item))
-                {
-                    DecreaseQuality(item);
-                }
-
-                DecreaseSellIn(item);
-
-                DecreaseQualityIfConjuredManaCake(item);
-
-                if (item.SellIn >= 0) continue;
-                
-                if (IncreaseQualityForAgedBrieWhenSellByHasPassed(item)) continue;
-                if (ResetQualityForBackstagePassWhenSellByDateHasPassed(item)) continue;
-                            
-                DecreaseQuality(item);
-            }
-        }
-
-        private static void DecreaseQualityIfConjuredManaCake(Item item)
-        {
-            if (item.Name.Equals("Conjured Mana Cake"))
-            {
-                DecreaseQuality(item);
-            }
-        }
-
-        private static bool ResetQualityForBackstagePassWhenSellByDateHasPassed(Item item)
-        {
-            if (item.Name.Equals("Backstage passes to a TAFKAL80ETC concert"))
-            {
-                ResetQualityToZero(item);
-                return true;
-            }
-
-            return false;
-        }
-
-        private static bool IncreaseQualityForAgedBrieWhenSellByHasPassed(Item item)
-        {
-            if (item.Name.Equals("Aged Brie"))
-            {
-                IncreaseQuality(item);
-                return true;
-            }
-
-            return false;
-        }
-
-        private static void IncreaseQualityIfAgedBrie(Item item)
-        {
-            if (item.Name == "Aged Brie")
-            {
-                IncreaseQuality(item);
-            }
-        }
-
-        private static void IncreaseQualityIfBackstagePass(Item item)
-        {
-            if (item.Name != "Backstage passes to a TAFKAL80ETC concert")
-            {
-                return;
-            }
+            var agedBrieStrategy = new AgedBrieStrategy();
+            var backstagePassStrategy = new BackstagePassStrategy();
+            var conjuredManaStrategy = new ConjuredManaStrategy();
+            var legendaryStrategy = new LegendaryStrategy();
+            var defaultStrategy = new DefaultStrategy();
             
-            IncreaseQuality(item);
-            
-            if (item.SellIn < 11)
+            var strategies = new List<IStrategy>
             {
-                IncreaseQuality(item);
+                agedBrieStrategy,
+                backstagePassStrategy,
+                conjuredManaStrategy,
+                legendaryStrategy,
+                defaultStrategy
+            };
+
+            IStrategy GetStrategy(Item item)
+            {
+                var currentStrategy = strategies.SingleOrDefault(strategy => strategy.Type == item.Name);
+                return currentStrategy ?? defaultStrategy;
             }
 
-            if (item.SellIn < 6)
+            foreach (var item in Items)
             {
-                IncreaseQuality(item);
+                var strategy = GetStrategy(item);
+                strategy.UpdateQuality(item);
             }
-        }
-
-        private static bool DoesQualityIncreaseOverTime(Item item)
-        {
-            var items = new List<string> { "Aged Brie", "Backstage passes to a TAFKAL80ETC concert" };
-            return items.Contains(item.Name);
-        }
-
-        private static bool IsLegendary(Item item)
-        {
-            return item.Name.Equals("Sulfuras, Hand of Ragnaros");
-        }
-
-        private static bool IsQualityLowerThanMaxValue(Item item)
-        {
-            return item.Quality < 50;
-        }
-        
-        private static bool IsQualityHigherThanMinValue(Item item)
-        {
-            return item.Quality > 0;
-        }
-
-        private static void ResetQualityToZero(Item item)
-        {
-            item.Quality -= item.Quality;
-        }
-
-        private static void IncreaseQuality(Item item)
-        {
-            if (IsQualityLowerThanMaxValue(item))
-            {
-                item.Quality += 1;
-            }
-        }
-
-        private static void DecreaseQuality(Item item)
-        {
-            if (IsQualityHigherThanMinValue(item))
-            {
-                item.Quality -= 1;   
-            }
-        }
-
-        private static void DecreaseSellIn(Item item)
-        {
-            item.SellIn -= 1;
         }
     }
 }
