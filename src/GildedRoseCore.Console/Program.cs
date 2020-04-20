@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 /*
  * Hi and welcome to team Gilded Rose. As you know, we are a small inn with a prime location in a prominent city ran by a friendly innkeeper named Allison. We also buy and sell only the finest goods. Unfortunately, our goods are constantly degrading in quality as they approach their sell by date. We have a system in place that updates our inventory for us. It was developed by a no-nonsense type named Leeroy, who has moved on to new adventures. Your task is to add the new feature to our system so that we can begin selling a new category of items. First an introduction to our system:
@@ -80,60 +81,76 @@ namespace ConsoleApplication
 
         public void UpdateQuality()
         {
-            foreach (var item in Items)
-            {
-                if (IsLegendary(item))
-                {
-                    continue;
-                }
-                
-                if (DoesQualityIncreaseOverTime(item))
-                {
-                    IncreaseQuality(item);
-                    
-                    if (item.Name == "Backstage passes to a TAFKAL80ETC concert")
-                    {
-                        if (item.SellIn < 11)
-                        {
-                            IncreaseQuality(item);
-                        }
+            var allNotLegendaryItems = Items.Where(item => !IsLegendary(item)).ToList();
 
-                        if (item.SellIn < 6)
-                        {
-                            IncreaseQuality(item);
-                        }
-                    }
-                }
-                else
+            foreach (var item in allNotLegendaryItems)
+            {
+                IncreaseQualityIfAgedBrie(item);
+                IncreaseQualityIfBackstagePass(item);
+
+                if (!DoesQualityIncreaseOverTime(item))
                 {
                     DecreaseQuality(item);
                 }
 
                 DecreaseSellIn(item);
 
-                if (item.SellIn >= 0)
-                {
-                    continue;
-                }
-
-                if (item.Name.Equals("Aged Brie"))
-                {
-                    IncreaseQuality(item);
-                    continue;
-                }
+                if (item.SellIn >= 0) continue;
                 
-                if (item.Name.Equals("Backstage passes to a TAFKAL80ETC concert"))
-                {
-                    ResetQualityToZero(item);
-                    continue;
-                }
-                    
-                if (item.Quality <= 0)
-                {
-                    continue;
-                }
+                if (IncreaseQualityForAgedBrieWhenSellByHasPassed(item)) continue;
+                if (ResetQualityForBackstagePassWhenSellByDateHasPassed(item)) continue;
                             
                 DecreaseQuality(item);
+            }
+        }
+
+        private static bool ResetQualityForBackstagePassWhenSellByDateHasPassed(Item item)
+        {
+            if (item.Name.Equals("Backstage passes to a TAFKAL80ETC concert"))
+            {
+                ResetQualityToZero(item);
+                return true;
+            }
+
+            return false;
+        }
+
+        private static bool IncreaseQualityForAgedBrieWhenSellByHasPassed(Item item)
+        {
+            if (item.Name.Equals("Aged Brie"))
+            {
+                IncreaseQuality(item);
+                return true;
+            }
+
+            return false;
+        }
+
+        private static void IncreaseQualityIfAgedBrie(Item item)
+        {
+            if (item.Name == "Aged Brie")
+            {
+                IncreaseQuality(item);
+            }
+        }
+
+        private static void IncreaseQualityIfBackstagePass(Item item)
+        {
+            if (item.Name != "Backstage passes to a TAFKAL80ETC concert")
+            {
+                return;
+            }
+            
+            IncreaseQuality(item);
+            
+            if (item.SellIn < 11)
+            {
+                IncreaseQuality(item);
+            }
+
+            if (item.SellIn < 6)
+            {
+                IncreaseQuality(item);
             }
         }
 
