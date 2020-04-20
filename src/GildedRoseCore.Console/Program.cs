@@ -82,76 +82,106 @@ namespace ConsoleApplication
         {
             foreach (var item in Items)
             {
-                if (item.Name != "Aged Brie" && item.Name != "Backstage passes to a TAFKAL80ETC concert")
+                if (IsLegendary(item))
                 {
-                    if (item.Quality > 0)
+                    continue;
+                }
+                
+                if (DoesQualityIncreaseOverTime(item))
+                {
+                    IncreaseQuality(item);
+                    
+                    if (item.Name == "Backstage passes to a TAFKAL80ETC concert")
                     {
-                        if (item.Name != "Sulfuras, Hand of Ragnaros")
+                        if (item.SellIn < 11)
                         {
-                            item.Quality = item.Quality - 1;
+                            IncreaseQuality(item);
+                        }
+
+                        if (item.SellIn < 6)
+                        {
+                            IncreaseQuality(item);
                         }
                     }
                 }
                 else
                 {
-                    if (item.Quality < 50)
-                    {
-                        item.Quality = item.Quality + 1;
-
-                        if (item.Name == "Backstage passes to a TAFKAL80ETC concert")
-                        {
-                            if (item.SellIn < 11)
-                            {
-                                if (item.Quality < 50)
-                                {
-                                    item.Quality = item.Quality + 1;
-                                }
-                            }
-
-                            if (item.SellIn < 6)
-                            {
-                                if (item.Quality < 50)
-                                {
-                                    item.Quality = item.Quality + 1;
-                                }
-                            }
-                        }
-                    }
+                    DecreaseQuality(item);
                 }
 
-                if (item.Name != "Sulfuras, Hand of Ragnaros")
+                DecreaseSellIn(item);
+
+                if (item.SellIn >= 0)
                 {
-                    item.SellIn = item.SellIn - 1;
+                    continue;
                 }
 
-                if (item.SellIn < 0)
+                if (item.Name.Equals("Aged Brie"))
                 {
-                    if (item.Name != "Aged Brie")
-                    {
-                        if (item.Name != "Backstage passes to a TAFKAL80ETC concert")
-                        {
-                            if (item.Quality > 0)
-                            {
-                                if (item.Name != "Sulfuras, Hand of Ragnaros")
-                                {
-                                    item.Quality = item.Quality - 1;
-                                }
-                            }
-                        }
-                        else
-                        {
-                            item.Quality = item.Quality - item.Quality;
-                        }
-                    }
-                    else
-                    {
-                        if (item.Quality < 50)
-                        {
-                            item.Quality = item.Quality + 1;
-                        }
-                    }
+                    IncreaseQuality(item);
+                    continue;
                 }
+                
+                if (item.Name.Equals("Backstage passes to a TAFKAL80ETC concert"))
+                {
+                    ResetQualityToZero(item);
+                    continue;
+                }
+                    
+                if (item.Quality <= 0)
+                {
+                    continue;
+                }
+                            
+                DecreaseQuality(item);
             }
+        }
+
+        private static bool DoesQualityIncreaseOverTime(Item item)
+        {
+            var items = new List<string> { "Aged Brie", "Backstage passes to a TAFKAL80ETC concert" };
+            return items.Contains(item.Name);
+        }
+
+        private static bool IsLegendary(Item item)
+        {
+            return item.Name.Equals("Sulfuras, Hand of Ragnaros");
+        }
+
+        private static bool IsQualityLowerThanMaxValue(Item item)
+        {
+            return item.Quality < 50;
+        }
+        
+        private static bool IsQualityHigherThanMinValue(Item item)
+        {
+            return item.Quality > 0;
+        }
+
+        private static void ResetQualityToZero(Item item)
+        {
+            item.Quality -= item.Quality;
+        }
+
+        private static void IncreaseQuality(Item item)
+        {
+            if (IsQualityLowerThanMaxValue(item))
+            {
+                item.Quality += 1;
+            }
+        }
+
+        private static void DecreaseQuality(Item item)
+        {
+            if (IsQualityHigherThanMinValue(item))
+            {
+                item.Quality -= 1;   
+            }
+        }
+
+        private static void DecreaseSellIn(Item item)
+        {
+            item.SellIn -= 1;
         }
     }
 }
