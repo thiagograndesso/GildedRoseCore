@@ -1,6 +1,6 @@
 namespace ConsoleApplication
 {
-    public class AgedBrieStrategy : IStrategy
+    public sealed class AgedBrieStrategy : IStrategy
     {
         public string Type { get; } = "Aged Brie";
         

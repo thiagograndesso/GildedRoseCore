@@ -2,7 +2,7 @@ using System;
 
 namespace ConsoleApplication
 {
-    public class DefaultStrategy : IStrategy
+    public sealed class DefaultStrategy : IStrategy
     {
         public string Type { get; } = "Default";
         public void UpdateQuality(Item item)
