@@ -1,4 +1,6 @@
-namespace ConsoleApplication
+using ConsoleApplication;
+
+namespace GildedRoseCore.Console.Extensions
 {
     public static class ItemExtensions
     {

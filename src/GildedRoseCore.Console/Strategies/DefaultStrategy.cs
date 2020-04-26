@@ -1,6 +1,7 @@
-using System;
+using ConsoleApplication;
+using GildedRoseCore.Console.Extensions;
 
-namespace ConsoleApplication
+namespace GildedRoseCore.Console.Strategies
 {
     public sealed class DefaultStrategy : IStrategy
     {

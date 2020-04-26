@@ -1,4 +1,7 @@
-namespace ConsoleApplication
+using ConsoleApplication;
+using GildedRoseCore.Console.Extensions;
+
+namespace GildedRoseCore.Console.Strategies
 {
     public sealed class AgedBrieStrategy : IStrategy
     {

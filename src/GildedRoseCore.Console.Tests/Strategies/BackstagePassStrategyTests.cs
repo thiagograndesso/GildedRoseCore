@@ -1,8 +1,8 @@
 using ConsoleApplication;
-using Newtonsoft.Json.Serialization;
+using GildedRoseCore.Console.Strategies;
 using Xunit;
 
-namespace Tests
+namespace GildedRoseCore.Console.Tests.Strategies
 {
     public class BackstagePassStrategyTests
     {

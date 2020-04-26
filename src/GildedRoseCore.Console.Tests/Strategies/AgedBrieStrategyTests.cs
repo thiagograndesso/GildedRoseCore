@@ -1,7 +1,8 @@
 using ConsoleApplication;
+using GildedRoseCore.Console.Strategies;
 using Xunit;
 
-namespace Tests
+namespace GildedRoseCore.Console.Tests.Strategies
 {
     public class AgedBrieStrategyTests
     {

@@ -1,7 +1,8 @@
 using ConsoleApplication;
+using GildedRoseCore.Console.Extensions;
 using Xunit;
 
-namespace Tests
+namespace GildedRoseCore.Console.Tests.Extensions
 {
     public class ItemExtensionsTests
     {

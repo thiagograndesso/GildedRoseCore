@@ -1,19 +1,20 @@
 using ConsoleApplication;
+using GildedRoseCore.Console.Strategies;
 using Xunit;
 
-namespace Tests
+namespace GildedRoseCore.Console.Tests.Strategies
 {
-    public class ConjuredStrategyTests
+    public class DefaultStrategyTests
     {
         [Fact]
         public void UpdateQuality_WhenSellInDaysIsHigherThanZero_DecreasesSellInByOne()
         {
             // Arrange
             var item = new Item { SellIn = 5 };
-            var conjuredStrategy = new ConjuredStrategy();
+            var defaultStrategy = new DefaultStrategy();
             
             // Act
-            conjuredStrategy.UpdateQuality(item);
+            defaultStrategy.UpdateQuality(item);
             
             // Assert
             var expectedSellInDays = 4;
@@ -21,32 +22,32 @@ namespace Tests
         }
         
         [Fact]
-        public void UpdateQuality_WhenSellInDaysIsBelowZero_DecreasesQualityByFour()
+        public void UpdateQuality_WhenSellInDaysIsBelowZero_DecreasesQualityByTwo()
         {
             // Arrange
             var item = new Item { SellIn = -1, Quality = 4 };
-            var conjuredStrategy = new ConjuredStrategy();
+            var defaultStrategy = new DefaultStrategy();
             
             // Act
-            conjuredStrategy.UpdateQuality(item);
+            defaultStrategy.UpdateQuality(item);
             
             // Assert
-            var expectedQuality = 0;
+            var expectedQuality = 2;
             Assert.Equal(expectedQuality, item.Quality);
         }
         
         [Fact]
-        public void UpdateQuality_WhenSellInDaysIsHigherThanZero_DecreasesQualityByTwo()
+        public void UpdateQuality_WhenSellInDaysIsHigherThanZero_DecreasesQualityByOne()
         {
             // Arrange
             var item = new Item { SellIn = 5, Quality = 4 };
-            var conjuredStrategy = new ConjuredStrategy();
+            var defaultStrategy = new DefaultStrategy();
             
             // Act
-            conjuredStrategy.UpdateQuality(item);
+            defaultStrategy.UpdateQuality(item);
             
             // Assert
-            var expectedQuality = 2;
+            var expectedQuality = 3;
             Assert.Equal(expectedQuality, item.Quality);
         }
     }

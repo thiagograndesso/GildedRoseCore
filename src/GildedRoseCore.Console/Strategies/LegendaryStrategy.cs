@@ -1,4 +1,6 @@
-namespace ConsoleApplication
+using ConsoleApplication;
+
+namespace GildedRoseCore.Console.Strategies
 {
     public sealed class LegendaryStrategy : IStrategy
     {
