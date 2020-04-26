@@ -10,8 +10,9 @@ namespace ConsoleApplication
         {
             new AgedBrieStrategy(),
             new BackstagePassStrategy(),
-            new ConjuredManaStrategy(),
-            new LegendaryStrategy()
+            new ConjuredStrategy(),
+            new LegendaryStrategy(),
+            new DefaultStrategy()
         };
             
         public static IStrategy GetStrategyFor(Item item)

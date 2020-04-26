@@ -2,9 +2,10 @@ using System;
 
 namespace ConsoleApplication
 {
-    public class BackstagePassStrategy : IStrategy
+    public sealed class BackstagePassStrategy : IStrategy
     {
         public string Type { get; } = "Backstage passes to a TAFKAL80ETC concert";
+        
         public void UpdateQuality(Item item)
         {
             item.IncreaseQuality();

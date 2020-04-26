@@ -2,9 +2,10 @@ using System;
 
 namespace ConsoleApplication
 {
-    public class ConjuredManaStrategy : IStrategy
+    public sealed class ConjuredStrategy : IStrategy
     {
         public string Type { get; } = "Conjured Mana Cake";
+        
         public void UpdateQuality(Item item)
         {
             item.DecreaseQuality();
